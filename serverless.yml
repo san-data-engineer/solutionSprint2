@@ -1,0 +1,97 @@
+service: solutions
+
+provider:
+  name: aws
+  region: sa-east-1
+  runtime: provided.al2
+  lambdaHashingVersion: 20201221
+  alb:
+    targetGroupPrefix: 'solutions-main'
+  environment:
+    STAGE: ${opt:stage, self:provider.stage, 'dev'}
+    APP_ENV: 'production'
+    APP_URL: 'https://solutions.domain.com'
+    APP_STORAGE: '/tmp/'
+    CACHE_DRIVER: 'redis'
+    CACHE_PREFIX: 'solutions'
+
+custom:
+  envSufix:
+    dev: -dev
+    staging: -staging
+    other: ''
+
+plugins:
+  - ./vendor/bref/bref
+  - ./vendor/bref/extra-php-extensions
+
+useDotenv: true
+
+package:
+  patterns:
+    - '.env'
+    - '!.git/**'
+    - '!.idea/**'
+    - '!coverage/**'
+    - '!node_modules/**'
+    - '!tests/**'
+    - '!README.md'
+    - '!.env.example'
+    - '!serverless.yml'
+  excludeDevDependencies: true
+
+functions:
+  cli:
+    handler: public/cli.php
+    description: ''
+    memorySize: 512
+    timeout: 7
+    layers:
+      - ${bref:layer.php-80}
+      - ${bref-extra:redis-php-80}
+  api:
+    handler: public/http.php
+    memorySize: 512
+    timeout: 7
+    layers:
+      - ${bref:layer.php-80-fpm}
+      - ${bref-extra:redis-php-80}
+    role: arn:aws:iam::550936286765:role/lambda-vpc-role
+    events:
+      - alb:
+          listenerArn: arn:aws:elasticloadbalancing:sa-east-1:550936286765:listener/app/elasticloadbalancing/549c35a117242c20/43f10cb42ae2d68f
+          priority: 104
+          conditions:
+            host: solutions.domain.com
+  worker:
+    handler: public/worker.php
+    memorySize: 512
+    timeout: 28 # in seconds
+    layers:
+      - ${bref:layer.php-80}
+      - ${bref-extra:redis-php-80}
+    events:
+      - sqs:
+          arn:
+            !GetAtt Queue.Arn
+          # Only 1 item at a time to simplify error handling
+          batchSize: 1
+
+resources:
+  Resources:
+    # The SQS queue
+    Queue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}${self:custom.envSufix.${opt:stage}, ''}
+        RedrivePolicy:
+          maxReceiveCount: 3 # jobs will be retried up to 3 times
+          # Failed jobs (after the retries) will be moved to the other queue for storage
+          deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+
+    # Failed jobs will go into that SQS queue to be stored, until a developer looks at these errors
+    DeadLetterQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ${self:service}-dl${self:custom.envSufix.${opt:stage}, ''}
+        MessageRetentionPeriod: 1209600 # maximum retention: 14 days
