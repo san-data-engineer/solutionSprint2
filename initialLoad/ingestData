@@ -1,0 +1,1 @@
+Nesta etapa fizemos testes na performance da carga, buscando o melhor tempo para execução do commit dos dados, se era a cada linha, por bloco de execução ou no final. 
