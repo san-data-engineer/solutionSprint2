@@ -7,7 +7,7 @@ Aluno:
 
 
 ## Objetivo
-Nosso objetivo será planejar e implementar a arquitetura de dados poliglota para tratamento do problema de performance na funcionalidade de ranking, da plataforma utilizada pela empresa Engage.
+Nosso objetivo é planejar e implementar a arquitetura de dados poliglota para tratamento do problema de performance na funcionalidade de ranking, da plataforma utilizada pela empresa Engage.
 
 ## Índice
 
