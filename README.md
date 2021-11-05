@@ -16,5 +16,5 @@ Nosso objetivo é planejar e implementar a arquitetura de dados poliglota para m
 * [ENTREGAVEL 2 - Modelo de Dados](https://github.com/san-data-engineer/solutionSprint2/blob/master/dataModel.md)
 * [ENTREGAVEL 3 - Implementação da arquitetura](https://github.com/san-data-engineer/solutionSprint2/blob/master/builtArchitecture.md)
 * [ENTREGAVEL 3 - Ingestão dos Dados](https://github.com/san-data-engineer/solutionSprint2/blob/master/ingestData.md)
-* [ENTREGAVEL 3 - Integração entre Redis e SQL Server por meio do AWS Lambda e PHP](https://github.com/lewney/solution_sprint)
+* [ENTREGAVEL 3 - Integração entre Redis e SQL Server por meio do AWS Lambda e PHP](https://github.com/san-data-engineer/solutionSprint2/tree/PHP)
 * [ENTREGAVEL 4 - Apresentação](https://github.com/san-data-engineer/solutionSprint2/tree/master/apresentacao)
