@@ -12,7 +12,7 @@ Nosso objetivo é planejar e implementar a arquitetura de dados poliglota para t
 
 ## Índice
 
-*[ARQUITETURA DE DADOS PROPOSTA]
+* [Arquitetura de Dados Proposta](https://github.com/san-data-engineer/solutionSprint2/edit/master/arquitetura.md)
 
 
 # Microservices Template
