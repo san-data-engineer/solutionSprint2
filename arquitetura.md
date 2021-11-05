@@ -1,3 +1,3 @@
-# ARQUITETURA DA SOLUÇÃO
+# Arquitetura da Solução
 
 <img src="./architecture.png"></img>
