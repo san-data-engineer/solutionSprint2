@@ -1,11 +1,11 @@
-# MODELO CONCEITUAL
+# Modelo Conceitual
 
 <img src="./conceitual_model.png"></img>
 
-# MODELO LÓGICO
+# Modelo Lógico
 
 <img src="./logical_model.png"></img>
 
-# MODELO RELACIONAL
+# Modelo Relacional
 
 <img src="./relational_model.png"></img>
